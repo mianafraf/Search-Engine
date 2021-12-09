@@ -1,17 +1,18 @@
-from generate import generate
-import csv
 
+import sys
+import os
+from generate import generate
+import pandas as pd
+import csv
 x=generate()
 x.loadlexicon()
-row,col=5,2
-a = [[0 for i in range(col)] for j in range(row)]
-for i in a:
- val=input("Enter word: ")
- print(val)
- i[0]=val
 
+
+print(x.lexicon)
+print("welcome")
+
+df = pd.DataFrame.from_dict(x.lexicon, orient="index")
+
+df.to_csv('GFG.csv')
+a=pd.read_csv('lexicon.csv')
 print(a)
-x.generatelexicon(a)
-x.savelexicon()
-x.saveindex()
-
