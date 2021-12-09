@@ -9,9 +9,11 @@ class generate:
      lis=data.split(",")
      self.wid=int(lis[0])
      self.did=int(lis[1])
-     self.lexicon={}
-     self.doc={}
      f.close()
+     self.lexicon={} #dict containing lexicon
+     self.doc=[] #list containing doc ids
+     self.findex=[] #list containing forward index
+     
   
         
     def loadlexicon(self):
@@ -34,12 +36,28 @@ class generate:
         #generate forward index here
          pass
         else:
-         self.wid=self.wid+1
          self.lexicon[word]=self.wid
+         self.wid=self.wid+1
          self.generatelexicon(word)
 
     def saveindex(self):
       f=open('index.txt','w')
       f.write("%d,%d\n"%(self.wid,self.did))
+
+
+    def loadfindex(self):
+     file = open("forwardindex.csv", "r")
+     csv_reader = csv.reader(file)
+     for row in csv_reader:
+       self.findex.append(row)
+   
+    def savefindex(self):
+     with open('forwardindex.csv', 'w') as f:
+     # using csv.writer method from CSV package
+      write = csv.writer(f)
+      write.writerows(self.findex)
       
-      
+     
+
+    #def generatefindex(self,wid)
+     
