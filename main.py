@@ -1,18 +1,16 @@
-
-import sys
-import os
-from generate import generate
-import pandas as pd
 import csv
-x=generate()
-x.loadlexicon()
+from generate import generate
+
+v=generate()
+v.wid=0
+v.saveindex()
+f=open('lexicon.csv','w')
+
+f.close()
+
+v.loadfindex()
+print(v.findex)
+v.savefindex()
+f=open('forwardindex.csv','w')
 
 
-print(x.lexicon)
-print("welcome")
-
-df = pd.DataFrame.from_dict(x.lexicon, orient="index")
-
-df.to_csv('GFG.csv')
-a=pd.read_csv('lexicon.csv')
-print(a)
