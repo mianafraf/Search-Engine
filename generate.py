@@ -10,6 +10,7 @@ class generate:
      self.wid=int(lis[0])
      self.did=int(lis[1])
      f.close()
+     self.i=0
      self.lexicon={} #dict containing lexicon
      self.doc=[] #list containing doc ids
      self.findex=[[[0]]] #list containing forward index
@@ -38,14 +39,20 @@ class generate:
      # function iterates through every key in one document
     # checks if it is already in lexicon, otherwise assigns it a word id
     def generatelexicon(self,dictn):
-        for i in range(len(dictn)):
-            word=dictn[i]
+        self.did=self.did+1  
+        #for i in range(len(dictn)):
+        for key in dictn:
+            word=key
+            #word=dictn[i]
+            word.replace(',','')
             if word in self.lexicon.keys():
-                #generate forward index here
-                pass
+                self.generatefindex(self.lexicon[word],dictn[word])
+                #pass
             else:
              self.lexicon[word]=self.wid
+             self.generatefindex(self.lexicon[word],dictn[word])
              self.wid=self.wid+1
+             self.i=self.i+1
 
     def saveindex(self):
       f=open('index.txt','w',encoding="utf-8")
@@ -55,7 +62,7 @@ class generate:
 
     def loadfindex(self):
      counter=0 #count number of rows     
-     file = open("g5g.csv", "r")
+     file = open("forwardindex.csv", "r")
      csv_reader = csv.reader(file)
      
      count=0 #count variable 
@@ -82,7 +89,7 @@ class generate:
      file.close()    
    
     def savefindex(self):
-     file = open('g5g.csv', 'w', newline ='\n')
+     file = open('forwardindex.csv', 'w', newline ='\n')
   
      #writing the data into the file
      with file:    
@@ -97,6 +104,25 @@ class generate:
      file.close()
       
      
-
-    #def generatefindex(self,wid)
+    def adddoc(self):
+     f=open('documents.txt','a')
+     f.write("%d\n"%(self.did))
+     f.close
      
+
+    def generatefindex(self,id,listn):
+      
+       if(self.did+1>len(self.findex)):    
+            self.findex.append([[id]])
+       else: 
+            self.findex[self.did].append([id])
+
+       x=self.did
+       try:
+        y=len(self.findex[self.did])-1
+       except:
+            self.findex.append([[id]])
+            y=len(self.findex[self.did])-1
+       print(x,y)
+       for i in range(len(listn)):
+         self.findex[x][y].append(int(listn[i]))

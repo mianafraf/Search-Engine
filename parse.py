@@ -3,11 +3,12 @@ import csv
 from generate import generate
 import os
 print(os.getcwd())
+v=generate()
 
 #basePath = os.path.dirname(os.path.abspath(__file__))
 basePath=os.getcwd()
 #df = pd.read_json(basePath + '/nela-covid-2020/newsdata/21stcenturywire.json')
-df=pd.read_json(open('21stcenturywire.json', "r", encoding="utf8"))
+df=pd.read_json(open('21stcenturywire.json', "r", encoding="utf-8"))
 #parsing json file to pd dataframe
 #df = pd.read_json('nela-covid-2020/newsdata/21stcenturywire.json')
 
@@ -15,7 +16,7 @@ df=pd.read_json(open('21stcenturywire.json', "r", encoding="utf8"))
 #the values for each key are the positions at which they occur in the doc
 #number of occurences can be obtained by using len() 
 
-v=generate()
+
 print("welcome")
 
 
@@ -27,6 +28,7 @@ for item in range(0,len(df.index)):
 
     #code for getting indices of words
     v.loadlexicon()
+    v.loadfindex()
     i=0
     for index,word in enumerate(words):
 
@@ -40,10 +42,11 @@ for item in range(0,len(df.index)):
     
     key_iterable = occ_dict.keys()
     key_list = list(key_iterable)
-    v.generatelexicon(key_list)
+    v.generatelexicon(occ_dict)
     #if(i==0):print(occ_dict)
     i=i+1
     print(i)
     v.savelexicon()
+    v.savefindex()
     v.saveindex()
      
