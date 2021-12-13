@@ -29,6 +29,7 @@ for item in range(0,len(df.index)):
     #code for getting indices of words
     v.loadlexicon()
     v.loadfindex()
+    v.loadinvindex()
     i=0
     for index,word in enumerate(words):
 
@@ -48,5 +49,6 @@ for item in range(0,len(df.index)):
     print(i)
     v.savelexicon()
     v.savefindex()
+    v.saveinvindex()
     v.saveindex()
      

@@ -10,10 +10,11 @@ class generate:
      self.wid=int(lis[0])
      self.did=int(lis[1])
      f.close()
-     self.i=0
+     self.ct=0
      self.lexicon={} #dict containing lexicon
      self.doc=[] #list containing doc ids
      self.findex=[[[0]]] #list containing forward index
+     self.invindex=[[0]] #list containing inverted index
      
 
     def loadlexicon(self):
@@ -47,12 +48,14 @@ class generate:
             word.replace(',','')
             if word in self.lexicon.keys():
                 self.generatefindex(self.lexicon[word],dictn[word])
+                self.generateinvindex(int(self.lexicon[word]))
                 #pass
             else:
              self.lexicon[word]=self.wid
              self.generatefindex(self.lexicon[word],dictn[word])
+             self.generateinvindex(int(self.lexicon[word]))
              self.wid=self.wid+1
-             self.i=self.i+1
+             
 
     def saveindex(self):
       f=open('index.txt','w',encoding="utf-8")
@@ -110,11 +113,17 @@ class generate:
      f.close
      
 
-    def generatefindex(self,id,listn):
-      
-       if(self.did+1>len(self.findex)):    
-            self.findex.append([[id]])
-       else: 
+    def generatefindex(self,id,listn): #takes wid as an argument
+
+       if(self.did==0 and id==0):
+         self.findex=[[[id]]]
+         self.ct=1
+       
+       if(self.did+1>len(self.findex)):
+           self.findex.append([[id]])
+           self.ct=1          
+       else:
+          if(self.did !=0 or (self.did==0 and id!=0)):     
             self.findex[self.did].append([id])
 
        x=self.did
@@ -123,6 +132,53 @@ class generate:
        except:
             self.findex.append([[id]])
             y=len(self.findex[self.did])-1
-       print(x,y)
+       #print(x,y)
        for i in range(len(listn)):
          self.findex[x][y].append(int(listn[i]))
+       self.ct=2
+
+    def loadinvindex(self):
+      counter=0
+      count=0
+      f=open('invertedindex.csv','r')
+
+      csv_reader=csv.reader(f)
+
+      for row in csv_reader:
+        if(counter==0):
+          self.invindex=[[int(row[0])]]
+          counter=1
+        for i in range(len(row)):
+          if(i==0 and counter==2):
+            self.invindex.append([int(row[0])])
+            count=count+1
+          elif(i>0):
+            self.invindex[count].append(int(row[i]))    
+
+        counter=2  
+      f.close()     
+
+    def saveinvindex(self):
+      file = open('invertedindex.csv', 'w', newline ='\n')
+  
+     #writing the data into the file
+      with file:    
+        write = csv.writer(file)
+        for i in range(len(self.invindex)):   
+           write.writerow(self.invindex[i])
+     
+      file.close()
+
+    def generateinvindex(self,id):
+      if(self.wid==0 and self.did==0):
+        pass #do nothing
+
+      else:
+         if(id+1>len(self.invindex)):
+           self.invindex.append([self.did])
+         else:
+           self.invindex[id].append(self.did)    
+           
+  
+       
+  
