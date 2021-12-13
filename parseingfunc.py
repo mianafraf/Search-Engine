@@ -1,11 +1,16 @@
 import pandas as pd
 import csv
-import nltk
+#import nltk
 #nltk.download('stopwords')
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import re
+
+
+
+v=generate()
+
   
 #from generate.py import generate
 
@@ -30,6 +35,8 @@ for item in range(0,len(df.index)):
     words = df['content'][item].split()
 
     #code for getting indices of words
+    v.loadlexicon()
+    v.loadfindex()
     for index,word in enumerate(words):
         #converting word to lowercase
         word = word.lower()
@@ -45,5 +52,9 @@ for item in range(0,len(df.index)):
                 occ_dict[(word)] = []
                 occ_dict[(word)].append(index)
 
-    #lex_gen = generate() 
-    #lex_gen.generate_lexicon(occ_dict)
+    key_iterable = occ_dict.keys()
+    key_list = list(key_iterable)
+    v.generatelexicon(occ_dict)
+    v.savelexicon()
+    v.savefindex()
+    v.saveindex()
