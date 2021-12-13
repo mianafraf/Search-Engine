@@ -1,6 +1,17 @@
 import pandas as pd
 import csv
+import nltk
+#nltk.download('stopwords')
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import re
+  
 #from generate.py import generate
+
+
+#creating stemming object
+ps = PorterStemmer()
 
 #parsing json file to pd dataframe
 df = pd.read_json('nela-covid-2020/newsdata/21stcenturywire.json')
@@ -11,6 +22,7 @@ df = pd.read_json('nela-covid-2020/newsdata/21stcenturywire.json')
 
 
 
+#range can be a maximim of len(df.index)
 for item in range(0,len(df.index)):
     occ_dict = {}
     #obtaining content from dataframe
@@ -19,13 +31,19 @@ for item in range(0,len(df.index)):
 
     #code for getting indices of words
     for index,word in enumerate(words):
+        #converting word to lowercase
+        word = word.lower()
+        #removing non alphanumeric characters
+        word = re.sub("[^0-9a-zA-Z-]+",'',word)
+        #stemming word
+        word = ps.stem(word)
+        if len(word) > 0 and word not in stopwords.words('english'):
+            if (word) in occ_dict.keys():
 
-        if len(word)>2:
-            if word in occ_dict.keys():
-
-                occ_dict[word].append(index)
+                occ_dict[(word)].append(index)
             else:
-                occ_dict[word] = []
-                occ_dict[word].append(index)
+                occ_dict[(word)] = []
+                occ_dict[(word)].append(index)
 
     #lex_gen = generate() 
+    #lex_gen.generate_lexicon(occ_dict)
