@@ -29,7 +29,7 @@ for item in range(0, len(df.index)):
     # obtaining content from dataframe
     # placing content in array
     words = df['content'][item].split()
-
+    title = df['title'][item]
     # code for getting indices of words
     v.loadlexicon()
     v.loadfindex()
