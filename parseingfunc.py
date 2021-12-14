@@ -33,6 +33,7 @@ for item in range(0, len(df.index)):
     # code for getting indices of words
     v.loadlexicon()
     v.loadfindex()
+    v.loadinvindex()
     for index, word in enumerate(words):
         # converting word to lowercase
         word = word.lower()
@@ -54,3 +55,4 @@ for item in range(0, len(df.index)):
     v.savelexicon()
     v.savefindex()
     v.saveindex()
+    v.saveinvindex()
