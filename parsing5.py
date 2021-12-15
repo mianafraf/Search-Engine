@@ -4,6 +4,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tag import pos_tag
 from generate import generate
+from nltk.stem import PorterStemmer
 import os
 
 lemmatizer = WordNetLemmatizer()
@@ -21,7 +22,7 @@ basePath = os.getcwd()
 
 v = generate()
 print("start")
-
+ps = PorterStemmer()
 stop_words = set(stopwords.words("english"))
 
 #lemmatizer = WordNetLemmatizer()
@@ -59,8 +60,8 @@ for f in filenames:
                         for character in word:
                             if character.isalnum():
                                 emptyString += character
+                        emptyString = ps.stem(emptyString)        
                                 
-                    emptyString = lemmatizer.lemmatize(emptyString)            
                         if word in occ_dict.keys():
                             occ_dict[word].append(index)
                         else:
