@@ -25,11 +25,14 @@ for item in range(0,len(df.index)):
     #obtaining content from dataframe
     #placing content in array
     words = df['content'][item].split()
+    title=df['title'][item]
+    url=df['url'][item]
 
     #code for getting indices of words
     v.loadlexicon()
     v.loadfindex()
     v.loadinvindex()
+    #v.loaddocids()
     i=0
     for index,word in enumerate(words):
 
@@ -41,14 +44,14 @@ for item in range(0,len(df.index)):
                 occ_dict[word] = []
                 occ_dict[word].append(index)
     
-    key_iterable = occ_dict.keys()
-    key_list = list(key_iterable)
-    v.generatelexicon(occ_dict)
+    
+    v.generatelexicon(occ_dict,title,url)
     #if(i==0):print(occ_dict)
     i=i+1
     print(i)
+    print(v.doc)
     v.savelexicon()
     v.savefindex()
     v.saveinvindex()
+    v.savedocids()
     v.saveindex()
-     

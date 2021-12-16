@@ -12,9 +12,10 @@ class generate:
      f.close()
      self.ct=0
      self.lexicon={} #dict containing lexicon
-     self.doc=[] #list containing doc ids
+     self.doc=[[0]] #list containing doc ids
      self.findex=[[[0]]] #list containing forward index
      self.invindex=[[0]] #list containing inverted index
+    
      
 
     def loadlexicon(self):
@@ -39,8 +40,9 @@ class generate:
   
      # function iterates through every key in one document
     # checks if it is already in lexicon, otherwise assigns it a word id
-    def generatelexicon(self,dictn):
-        self.did=self.did+1  
+    def generatelexicon(self,dictn,title,url):
+        self.did=self.did+1 
+        self.assigndocids(title,url) 
         #for i in range(len(dictn)):
         for key in dictn:
             word=key
@@ -178,7 +180,48 @@ class generate:
            self.invindex.append([self.did])
          else:
            self.invindex[id].append(self.did)    
+
+    def savedocids(self):
+          file = open('docids.txt', 'w', newline ='\n')
+
+          for i in range(len(self.doc)):
+                file.write(self.doc[i][0]+'\n')
+                #file.write('\n')
+                file.write(self.doc[i][1]+'\n')
+                #file.write('\n')
+     
+          file.close() 
            
-  
+    def loaddocids(self):
+      counter=0
+      count=0
+      signal=0
+      f=open('docids.txt','r')
+      Lines = f.readlines()
+    
+      for line in Lines:
+         if(counter==0):
+             self.doc=[[line]]
+             counter=1
+             signal=1
+         else:
+           if signal==0:
+              self.doc.append([line])
+              count=count+1
+              signal=1
+           else:
+              self.doc[count].append(line)
+              signal=0 
+      f.close()  
+
+    def assigndocids(self,title,url):
+      if(self.did==0 ):
+        self.doc=[[title]]
+        self.doc[self.did].append(url)   
+      else:
+        self.doc.append([title]) 
+        self.doc[self.did].append(url) 
+
+
        
   
