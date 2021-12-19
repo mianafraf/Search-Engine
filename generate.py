@@ -15,6 +15,7 @@ class generate:
      self.doc=[[0]] #list containing doc ids
      self.findex=[[[0]]] #list containing forward index
      self.invindex=[[0]] #list containing inverted index
+     self.filesread={}
     
      
 
@@ -201,16 +202,19 @@ class generate:
     
       for line in Lines:
          if(counter==0):
-             self.doc=[[line]]
+             lin=line.rstrip('\n')  
+             self.doc=[[lin]]
              counter=1
              signal=1
          else:
            if signal==0:
-              self.doc.append([line])
+              lin=line.rstrip('\n')
+              self.doc.append([lin])
               count=count+1
               signal=1
            else:
-              self.doc[count].append(line)
+              lin=line.rstrip('\n')
+              self.doc[count].append(lin)
               signal=0 
       f.close()  
 
@@ -223,5 +227,23 @@ class generate:
         self.doc[self.did].append(url) 
 
 
-       
-  
+    def savefilesread(self):
+          a_file = open("filesread.csv", "w")
+          writer = csv.writer(a_file)
+          for key, value in self.filesread.items():
+            writer.writerow([key, value])
+
+          a_file.close()
+          self.filesread={}
+          
+    def loadfilesread(self):
+         with open('filesread.csv','r') as data:
+            for line in csv.reader(data):
+              for i in range(len(line)):
+                if(i==0):
+                  k=line[0]
+                else:
+                  d=line[i]       
+                  
+              self.filesread[k]=d
+         data.close()

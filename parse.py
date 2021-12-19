@@ -32,6 +32,8 @@ for item in range(0,len(df.index)):
     v.loadlexicon()
     v.loadfindex()
     v.loadinvindex()
+    v.loaddocids()
+    v.loadfilesread()
     #v.loaddocids()
     i=0
     for index,word in enumerate(words):
@@ -55,3 +57,4 @@ for item in range(0,len(df.index)):
     v.saveinvindex()
     v.savedocids()
     v.saveindex()
+    v.savefilesread()

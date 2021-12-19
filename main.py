@@ -18,10 +18,10 @@ ob.loaddocids()
 print(ob.doc)
 for i in range(len(ob.doc)):
 
-        a=ob.doc[i][0].rstrip('\n')
-        b=ob.doc[i][1].rstrip('\n')
-        print(a)
-        print(b)
+       # a=ob.doc[i][0].rstrip('\n')
+        #b=ob.doc[i][1].rstrip('\n')
+        #print(a)
+        #print(b)
         print('\n')
 
 
@@ -37,6 +37,8 @@ f.close()
 f=open('invertedindex.csv','w')
 f.close()
 f=open('docids.txt','w')
+f.close()
+f=open('filesread.csv','w')
 f.close()
 #v= generate()
 #v.loadfindex()
