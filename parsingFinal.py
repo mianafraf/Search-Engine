@@ -30,8 +30,13 @@ path = "/Users/ahmadtashfeen/Downloads/dataverse_files/nela-covid-2020/newsdata"
 filenames = []
 
 for f in os.listdir(path):
-    filenames.append(f)
+    if f in v.filesread.keys():
+        pass
+    else:
+        v.filesread[f] = 1
+        filenames.append(f)
 
+v.loadfilesread()
 v.loadlexicon()
 v.loadfindex()
 v.loadinvindex()
@@ -39,16 +44,8 @@ v.loadinvindex()
 i = 0
 ac = 0
 
-def get_wordnet_pos(word):
-    """Map POS tag to first character lemmatize() accepts"""
-    tag = pos_tag([word])[0][1][0].upper()
-    tag_dict = {"J": wordnet.ADJ,
-                "N": wordnet.NOUN,
-                "V": wordnet.VERB}
-
-    return tag_dict.get(tag, wordnet.NOUN)
-
 for f in filenames:
+    v.loaddocids()
     start = time.time()
     df = pd.read_json(open(path + "/" + f, "r", encoding="utf8"))
     for item in range(0, len(df.index)):
@@ -56,6 +53,8 @@ for f in filenames:
         # obtaining content from dataframe
         # placing content in array
         words = df['content'][item].split()
+        title = df['title'][item]
+        url = df['url'][item]
 
         # code for getting indices of words
         
@@ -74,8 +73,9 @@ for f in filenames:
         i = i+1
         print(i)
         if len(occ_dict.keys()) > 2:
-            v.generatelexicon(occ_dict)
+            v.generatelexicon(occ_dict, title, url)
     print(f)
+    v.savedocids()
     if i > 100000:
         break
 
@@ -85,5 +85,6 @@ v.savelexicon()
 v.savefindex()
 v.saveindex()
 v.saveinvindex()
+v.savefilesread()
 
 print("stop")
