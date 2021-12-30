@@ -181,22 +181,22 @@ class generate:
                 
                 
             else:
-                # self.invindex[id].append(self.did)
+                self.invindex[id].append(self.did)
                 #code to sort inverted index while inserting
-                insert_occurrences = 0
-                dcid = self.findex[self.did]
-                for wordlist in dcid:
-                    if wordlist[0] == id:
-                         insert_occurrences = len(wordlist[1:])
-                for i, document in enumerate(self.invindex[id]):
-                    current_occurrences = 0
-                    dcid = self.findex[document]
-                    for wordlist in dcid:
-                        if wordlist[0] == id:
-                            current_occurrences = len(wordlist[1:])
-                    if insert_occurrences >= current_occurrences:
-                        self.invindex[id].insert(i,self.did)
-                        break        
+                # insert_occurrences = 0
+                # dcid = self.findex[self.did]
+                # for wordlist in dcid:
+                #     if wordlist[0] == id:
+                #          insert_occurrences = len(wordlist[1:])
+                # for i, document in enumerate(self.invindex[id]):
+                #     current_occurrences = 0
+                #     dcid = self.findex[document]
+                #     for wordlist in dcid:
+                #         if wordlist[0] == id:
+                #             current_occurrences = len(wordlist[1:])
+                #     if insert_occurrences >= current_occurrences:
+                #         self.invindex[id].insert(i,self.did)
+                #         break        
                       
                 
 
