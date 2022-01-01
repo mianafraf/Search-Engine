@@ -87,9 +87,9 @@ for x in articleList:
         
 print(intersectedList)
 
-for item in intersectedList:
-    print(v.doc[item][0])
-    print(v.doc[item][1])
+# for item in intersectedList:
+#     print(v.doc[item][0])
+#     print(v.doc[item][1])
 
 for x in articleList:
     unintersectedList.append(Diff(x, intersectedList))
@@ -108,5 +108,5 @@ finalList = intersectedList + odUnintersectedList
 print(finalList)
 
 for x in finalList:
-    print(v.doc[item][0])
-    print(v.doc[item][1])
+    print(v.doc[x][0])
+    print(v.doc[x][1])
