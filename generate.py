@@ -1,10 +1,10 @@
 import csv
-
+import time
 
 class generate:
 
     def __init__(self):
-        f = open('index.txt', 'r')
+        f = open('E:/NUST/BSCS-10ABC/DSA/FINAL PROJECT/nela-covid-2020/index.txt', 'r')
         data = f.readline()
         lis = data.split(",")
         self.wid = int(lis[0])
@@ -71,7 +71,7 @@ class generate:
         for row in csv_reader:
             if (counter == 0):
                 self.findex = [[[int(row[1])]]]
-                counter = 1;
+                counter = 1
 
             for i in range(len(row)):
                 if (i == 0):
@@ -153,6 +153,138 @@ class generate:
             counter = 2
         f.close()
 
+    
+    def getoccurrences(self,wordid,docid):
+        occurrences = 0
+        document = self.findex[docid]
+        for wordlist in document:
+            if wordlist[0] == wordid:
+                occurrences = len(wordlist[1:])   
+
+        return occurrences                
+
+    def mergesortdoclist(self,wordid, doclist):
+        if len(doclist) > 1:
+            mid = len(doclist)//2
+  
+            # Dividing the array elements
+            left = doclist[:mid]
+    
+            # into 2 halves
+            right = doclist[mid:]
+
+            self.mergesortdoclist(wordid,left)
+
+            self.mergesortdoclist(wordid,right)
+
+            i = j = k = 0
+  
+            # Copy data to temp arrays L[] and R[]
+            while i < len(left) and j < len(right):
+                if self.getoccurrences(wordid,left[i])  > self.getoccurrences(wordid,right[j]):
+                    doclist[k] = left[i]
+                    i += 1
+                else:
+                    doclist[k] = right[j]
+                    j += 1
+                k += 1
+    
+            # Checking if any element was left
+            while i < len(left):
+                doclist[k] = left[i]
+                i += 1
+                k += 1
+    
+            while j < len(right):
+                doclist[k] = right[j]
+                j += 1
+                k += 1
+    
+    
+    def countsortdoclist(self,wordid,doclist):
+        # The output character array that will have sorted arr
+        output = [0 for i in range(len(doclist))]
+    
+        # Create a count array to store count of individual
+        # characters and initialize count array as 0
+        count = [0 for i in range(len(doclist))]
+    
+       
+    
+        # Store count of each character
+        for i in range(0,len(doclist)):
+            count[i] = self.getoccurrences(wordid,doclist[i])
+        print (count)
+        
+        for i in range(0,len(doclist)):
+            output[i] = doclist[count.index(max(count))]
+            doclist.remove(doclist[count.index(max(count))])
+            count.remove(max(count))
+       
+    
+        # Copy the output array to arr, so that arr now
+        # contains sorted characters
+        for i in range(len(output)):
+            doclist.append(output[i])
+        
+
+            
+            
+    
+    
+    
+    def insertionSort(self,wordid,doclist):
+ 
+        # Traverse through 1 to len(arr)
+        for i in range(1, len(doclist)):
+    
+            key = doclist[i]
+    
+            # Move elements of arr[0..i-1], that are
+            # greater than key, to one position ahead
+            # of their current position
+            j = i-1
+            while j >= 0 and self.getoccurrences(wordid,key) > self.getoccurrences(wordid,doclist[j]) :
+                    doclist[j + 1] = doclist[j]
+                    j -= 1
+            doclist[j + 1] = key
+    
+    
+    
+    def sortfullinvindex(self):
+        for wordid, doclist in enumerate(self.invindex):
+            start = time.time()
+            print(wordid)
+            # self.insertionSort(wordid,doclist)
+            # self.countsortdoclist(wordid,doclist)
+            self.mergesortdoclist(wordid,doclist)
+            print(time.time() - start)
+            
+
+
+        # for word_id, word_id_doc_list in enumerate(self.invindex):
+
+        #     if len(word_id_doc_list)>1:
+        #         mid = len(arr)//2
+  
+        #         # Dividing the array elements
+        #         left = arr[:mid]
+        
+        #         # into 2 halves
+        #         right = arr[mid:]
+
+
+        #             for i in range(0,len(word_id_doc_list)-1):
+        #                 if self.getoccurrences(word_id,word_id_doc_list[i]) < self.getoccurrences(word_id,word_id_doc_list[i+1]):
+        #                     temp = word_id_doc_list[i]
+        #                     word_id_doc_list[i] = word_id_doc_list[i+1]
+        #                     word_id_doc_list[i+1] = temp
+                            
+
+        
+        
+    
+    
     def saveinvindex(self):
         file = open('invertedindex.csv', 'w', newline='\n')
 
